@@ -25,26 +25,49 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::displayUpdate(){
-    if(displayNum!=0 || holdNum!=0) //入力中..
-        clearMode = 1;
-
-    if(culcMode!=0){ //演算モード時、入力値ホールド
+void MainWindow::numButtonClicked(int num)
+{
+    //各種変数設定
+    if(culcMode!=0){
         holdNum = displayNum;
         holdCulcMode = culcMode;
         displayNum = 0;
         culcMode = 0;
     }
-
     if(isWaitNextInput){
         displayNum = 0;
         isWaitNextInput = false;
     }
 
+    //入力
+    if(doubleMode == false){ //整数
+        displayNum *= 10;
+        displayNum += num;
+    }else{ //小数
+        doubleDigit++;
+        if(num!=0)
+            displayNum += num/pow(10, doubleDigit);
+        else
+            displayNum += 0;
+    }
+
+    //クリアボタン表示切替
+    if(displayNum!=0) //入力中
+        clearMode = 1;
     if(clearMode==0)
         ui->botton_clear->setText("AC");
     else
         ui->botton_clear->setText("C");
+
+    ui->display->display(displayNum);
+}
+
+void MainWindow::signButtonClick(int sign)
+{
+    if(isWaitNextInput==false)culc(); //連続演算
+    doubleMode = false;
+    doubleDigit = 0;
+    culcMode = sign;
 }
 
 
@@ -61,7 +84,6 @@ void MainWindow::culc(){
     ui->display->display(displayNum);
     isWaitNextInput = true;
 }
-
 
 
 void MainWindow::on_botton_clear_clicked()
@@ -83,21 +105,6 @@ void MainWindow::on_botton_clear_clicked()
     ui->display->display(displayNum);
 }
 
-
-void MainWindow::transDisplayNum(int num){
-    if(doubleMode == false){ //入力:整数
-        displayNum *= 10;
-        displayNum += num;
-    }else{ //小数
-        doubleDigit++;
-        if(num!=0)
-            displayNum += num/pow(10, doubleDigit);
-        else
-            displayNum += 0;
-    }
-}
-
-
 //演算
 void MainWindow::on_botton_equal_clicked()
 {
@@ -110,30 +117,22 @@ void MainWindow::on_botton_equal_clicked()
 //演算キー
 void MainWindow::on_botton_division_clicked()
 {
-    doubleMode = false;
-    doubleDigit = 0;
-    culcMode = 1;
+    signButtonClick(1);
 }
 
 void MainWindow::on_botton_multiply_clicked()
 {
-    doubleMode = false;
-    doubleDigit = 0;
-    culcMode = 2;
+    signButtonClick(2);
 }
 
 void MainWindow::on_botton_minus_clicked()
 {
-    doubleMode = false;
-    doubleDigit = 0;
-    culcMode = 3;
+    signButtonClick(3);
 }
 
 void MainWindow::on_botton_plus_clicked()
 {
-    doubleMode = false;
-    doubleDigit = 0;
-    culcMode = 4;
+    signButtonClick(4);
 }
 
 
@@ -167,79 +166,50 @@ void MainWindow::on_botton_backspace_clicked()
 //数字キー
 void MainWindow::on_botton_0_clicked()
 {
-    displayUpdate();
-    transDisplayNum(0);
-    ui->display->display(displayNum);
+    numButtonClicked(0);
 }
-
 
 void MainWindow::on_botton_1_clicked()
 {
-    displayUpdate();
-    transDisplayNum(1);
-    ui->display->display(displayNum);
+    numButtonClicked(1);
 }
-
 
 void MainWindow::on_botton_2_clicked()
 {
-    displayUpdate();
-    transDisplayNum(2);
-    ui->display->display(displayNum);
+    numButtonClicked(2);
 }
-
 
 void MainWindow::on_botton_3_clicked()
 {
-    displayUpdate();
-    transDisplayNum(3);
-    ui->display->display(displayNum);
+    numButtonClicked(3);
 }
-
 
 void MainWindow::on_botton_4_clicked()
 {
-    displayUpdate();
-    transDisplayNum(4);
-    ui->display->display(displayNum);
+    numButtonClicked(4);
 }
-
 
 void MainWindow::on_botton_5_clicked()
 {
-    displayUpdate();
-    transDisplayNum(5);
-    ui->display->display(displayNum);
+    numButtonClicked(5);
 }
-
 
 void MainWindow::on_botton_6_clicked()
 {
-    displayUpdate();
-    transDisplayNum(6);
-    ui->display->display(displayNum);
+    numButtonClicked(6);
 }
-
 
 void MainWindow::on_botton_7_clicked()
 {
-    displayUpdate();
-    transDisplayNum(7);
-    ui->display->display(displayNum);
+    numButtonClicked(7);
 }
-
 
 void MainWindow::on_botton_8_clicked()
 {
-    displayUpdate();
-    transDisplayNum(8);
-    ui->display->display(displayNum);
+    numButtonClicked(8);
 }
-
 
 void MainWindow::on_botton_9_clicked()
 {
-    displayUpdate();
-    transDisplayNum(9);
-    ui->display->display(displayNum);
+    numButtonClicked(9);
 }

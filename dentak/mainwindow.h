@@ -15,14 +15,17 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
 
-    void displayUpdate();
+
+private:
+
+    void numButtonClicked(int num);
+
+    void signButtonClick(int sign);
 
     void culc();
 
-    void transDisplayNum(int num);
-
+private slots:
 
     void on_botton_0_clicked();
 
